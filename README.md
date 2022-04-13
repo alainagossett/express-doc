@@ -7,7 +7,7 @@
 mkdir Express
 cd Express
 ```
-2. Create an entry poit file in your project
+2. Create an entry point file in your project
 ```
 touch server.js
 ```
@@ -73,8 +73,8 @@ mkdir models views controllers
 ```
 11. Add the appropriate files to models and controllers named "[resourceName].js" **singular for models, plural for controllers**
 ```
-touch /controllers/apps.js
-touch /models/app.js
+touch /controllers/things.js
+touch /models/thing.js
 ```
 12. Define a schema in your model for performing full CRUD in your MongoDB collection
 ```
@@ -95,12 +95,17 @@ module.exports = thing;
 ```
   - timestamps are not required, but best practice
   - you will require this schema in your controllers file
+  ```
+  const Thing = require('../models/thing');
+  ```
 
 13. In your controller file set up your router object and define the CRUD routes and make sure they all respond with res.render() or res.redirect()
   - Be sure to also import Router so you can reference it in server.js
-  - Think INDUCES
+  - ***Think INDUCES***
+    -
+    - all routes of INDUCES might not be needed if you are using a frontend or API to populate data (e.g. New, Edit)
 ```
-// inside /controllers/apps.js
+// inside /controllers/things.js
 
 const express = require('express');
 
@@ -145,6 +150,15 @@ thingRouter.post('/things', async (req, res) => {
     }
 })
 
+// EDIT ROUTE
+thingRouter.get('/things/:id/edit', async (req, res) => {
+    Thing.findById(req.params.id, (error, foundThing) => {
+        res.render('edit.ejs', {
+            thing: foundThing,
+        })
+    })
+})
+
 // SHOW ROUTE
 thingRouter.get('/things/:id', asyn (req, res) => {
     try {
@@ -159,7 +173,7 @@ module.exports = thingRouter;
   - **Be sure to export the module at the bottom so you can reference it in server.js**
 
 14. In your views directory add all necessary HTML templates to correspond with your routes
-### eg:
+### eg: new.ejs is rendered from the NEW route and will trigger the CREATE route
 ```
 // inside /views/new.ejs
 
@@ -180,7 +194,31 @@ module.exports = thingRouter;
   </body>
 </html>
 ```
-- Use squids for embedding code blocks in your HTML files
+### eg: edit.ejs is rendered from the EDIT route and will trigger the UPDATE route
+```
+// inside edit.ejs
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Thing App</title>
+    <link rel="stylesheet" href="/css/app.css" />
+  </head>
+  <body>
+    <h1>Edit Thing Page</h1>
+    <form action="/thing/<%=id%>">
+      Name: <input type="text" name="name" value="<%=thing.name%>" /><br />
+      Description: <input type="text" name="desc" value="<%=thing.description%>" /><br />
+      Code: <input type="text" name="code" style="color:<%
+      if(thing.code === 1234){ %> green <% } %> />
+      <br />
+      <input type="submit" name="" value="Submit Changes" />
+    </form>
+  </body>
+</html>
+```
+- Use code nuggets (fishes and squids) for embedding code blocks in your HTML files. Every new line of embedded code will need a nugget to surround that block.
 > <% %> is for JS codeblocks  
 <%= %>  is for referencing data points (like ids and model attributes)
 - In your views templates, you'll use form tags. 
