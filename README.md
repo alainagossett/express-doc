@@ -55,15 +55,15 @@ PORT=3000
 // Tell the app to listen
 ```
   - **Make sure you also require and configure the dotenv package**
-  ```
+  ```JavaScript
     require('dotenv').config();
   ```
 8. Connect to MongoDB by passing in the database URL
-```
+```JavaScript
 mongoose.connect(process.env.DATABASE_URL);
 ```
 9. Mount the middleware and tell the app to listen
-```
+```JavaScript
 app.use(express.json());
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
 ```
@@ -77,7 +77,7 @@ touch /controllers/things.js
 touch /models/thing.js
 ```
 12. Define a schema in your model for performing full CRUD in your MongoDB collection
-```
+```JavaScript
 // inside /models/app.js
 
 const mongoose = require('mongoose');
@@ -95,7 +95,7 @@ module.exports = thing;
 ```
   - timestamps are not required, but best practice
   - you will require this schema in your controllers file
-  ```
+  ```JavaScript
   const Thing = require('../models/thing');
   ```
 
@@ -104,7 +104,7 @@ module.exports = thing;
   - ***Think INDUCES***
     -
     - all routes of INDUCES might not be needed if you are using a frontend or API to populate data (e.g. New, Edit)
-```
+```JavaScript
 // inside /controllers/things.js
 
 const express = require('express');
@@ -174,7 +174,7 @@ module.exports = thingRouter;
 
 14. In your views directory add all necessary HTML templates to correspond with your routes
 ### eg: new.ejs is rendered from the NEW route and will trigger the CREATE route
-```
+```JavaScript
 // inside /views/new.ejs
 
 <!DOCTYPE html>
@@ -195,7 +195,7 @@ module.exports = thingRouter;
 </html>
 ```
 ### eg: edit.ejs is rendered from the EDIT route and will trigger the UPDATE route
-```
+```JavaScript
 // inside edit.ejs
 
 <!DOCTYPE html>
@@ -224,14 +224,15 @@ module.exports = thingRouter;
 - In your views templates, you'll use form tags. 
 > Forms can only perform GET and POST actions, so you'll use **method-override**  
 
-```
+```JavaScript
 // in your views template
 
 <form action="/things/<%=index; %>?_method=DELETE" method="POST"></form>
 
 <form action="/things/<%=index%>?_method=PUT" method="POST"></form>
-```
-```
+```  
+
+```JavaScript
 // in server.js
 
 const methodOverride = require('method-override');
@@ -243,7 +244,7 @@ app.use(methodOverride('_method'));
 
 ## Common Boilerplate code:
 ### This would go in server.js
-```
+```JavaScript
 const express = require('express');
 const mongoose = require('mongoose');
 const appRouter = require('./controllers/app');
