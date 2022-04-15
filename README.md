@@ -114,8 +114,8 @@ const Thing = require('../models/thing');
 const thingRouter = express.Router();
 
 // INDEX ROUTE
-thingRouter.get('/', (req, res) => {
-    res.send('hello world')
+thingRouter.get('/things', (req, res) => {
+    res.render('index.ejs')
 })
 
 // NEW ROUTE
